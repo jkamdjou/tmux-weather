@@ -14,6 +14,6 @@ get_tmux_option() {
 set_tmux_option() {
   local option="$1"
   local value="$(get_tmux_option "$option")"
-  echo "$(interpolate "$value")"
+  # echo "$(interpolate "$value")"
   tmux set-option -gq "$option" "$(interpolate "$value")"
 }

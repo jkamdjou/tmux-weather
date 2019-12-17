@@ -16,15 +16,25 @@ weather() {
   fi
 
   if [[ ! -f "$cache_file" ]]; then
-    URL='https://query.yahooapis.com/v1/public/yql'
     GEO=$(curl -s https://ipinfo.io | jq -r '.loc')
-    QUERY='select item.condition from weather.forecast where woeid in (select woeid from geo.places where text="('$GEO')")'
-    read CODE DEGREES <<< $(curl -Gs $URL --data-urlencode "q=$QUERY" -d format=json | jq -r '.query.results.channel.item.condition | .code + " " + .temp')
-    case "$CODE" in
-      9|1[0-2])  ICON="☂";;
-      2[6-9]|30) ICON="☁";;
-      3[2-4])    ICON="☀";;
-      *)         ICON="";;
+    URL="https://api.darksky.net/forecast/$DARKSKY_API_KEY/$GEO"
+    echo "here"
+    read ICON_STR DEGREES <<< $(curl -s $URL | jq -r '.currently | .icon + " " + "\( .apparentTemperature )"')
+    case "$ICON_STR" in
+      clear-day)            ICON="☀";;
+      clear-night)          ICON="☀";;
+      rain)                 ICON="☂";;
+      snow)                 ICON="☂";;
+      sleet)                ICON="☂";;
+      wind)                 ICON="☁";;
+      fog)                  ICON="☁";;
+      cloudy)               ICON="☁";;
+      partly-cloudy-day)    ICON="☁";;
+      partly-cloudy-night)  ICON="☁";;
+      hail)                 ICON="☂";;
+      thunderstorm)         ICON="☂";;
+      tornado)              ICON="☂";;
+      *)                    ICON="";;
     esac
     local WEATHER="${DEGREES}°"
     [[ -n "$ICON" ]] && WEATHER="$WEATHER $ICON "
