@@ -5,6 +5,7 @@ source "$CWD/tmux.sh"
 
 cache_file=~/.tmux-weather
 cache_ttl=900
+DARKSKY_API_KEY=$(cat ~/.config/tmux-weather/key)
 
 weather() {
   if [[ -f "$cache_file" ]]; then
