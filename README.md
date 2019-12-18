@@ -24,6 +24,7 @@ Load the plugin with `prefix + I`.
 DarkSky API Key
 =====
 Get a free API key from DarkSky: https://darksky.net/dev
+
 Store it in `~/.config/tmux-weather/key`
 
 
