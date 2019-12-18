@@ -19,7 +19,6 @@ weather() {
   if [[ ! -f "$cache_file" ]]; then
     GEO=$(curl -s https://ipinfo.io | jq -r '.loc')
     URL="https://api.darksky.net/forecast/$DARKSKY_API_KEY/$GEO"
-    echo "here"
     read ICON_STR DEGREES <<< $(curl -s $URL | jq -r '.currently | .icon + " " + "\( .apparentTemperature )"')
     case "$ICON_STR" in
       clear-day)            ICON="☀";;
